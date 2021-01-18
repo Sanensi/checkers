@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "ES6",
+		"lib": [
+			"DOM",
+			"ES2019"
+		],
+		"moduleResolution": "node"
+	},
+	"include": [
+		"./src/**/*.ts"
+	],
+	"exclude": [
+		"node_modules"
+	]
+}
