@@ -6,27 +6,21 @@ const BOARD_SIZE = new Vec2(8, 8);
 let boardPosition = new Vec2(100, 100);
 let boardScale = new Vec2(50, 50);
 
+class Token {
+    constructor(
+        public color: string,
+        public position: Vec2
+    ) {}
+}
 
+const { bot: player1, top: player2 } = createTokens("blue", "red");
 
 export class Application extends ApplicationBase {
     draw() {
         this.clear();
-
-        this.ctx.fillStyle = "white";
-        this.ctx.strokeStyle = "black";
-        const fullSize = BOARD_SIZE.scale(boardScale);
-        this.ctx.fillRect(boardPosition.x, boardPosition.y, fullSize.x, fullSize.y);
-        this.ctx.strokeRect(boardPosition.x, boardPosition.y, fullSize.x, fullSize.y);
-
-        this.ctx.fillStyle = "gray";
-        for (let y = 0; y < BOARD_SIZE.y; y++) {
-            for (let x = 0; x < BOARD_SIZE.x; x++) {                
-                if ((x+y) % 2 === 1) {
-                    const offset = boardPosition.add(new Vec2(x, y).scale(boardScale));
-                    this.ctx.fillRect(offset.x, offset.y, boardScale.x, boardScale.y);
-                }
-            }
-        }
+        this.drawBoard();
+        player1.forEach(this.drawToken);
+        player2.forEach(this.drawToken);
     }
 
     resize(w: number, h: number) {
@@ -43,4 +37,71 @@ export class Application extends ApplicationBase {
 
         boardPosition = new Vec2(x, y);
     }
+
+    drawBoard() {
+        this.ctx.fillStyle = "white";
+        this.ctx.strokeStyle = "black";
+        const fullSize = BOARD_SIZE.scale(boardScale);
+        this.ctx.fillRect(boardPosition.x, boardPosition.y, fullSize.x, fullSize.y);
+        this.ctx.strokeRect(boardPosition.x, boardPosition.y, fullSize.x, fullSize.y);
+
+        this.ctx.fillStyle = "gray";
+        for (let y = 0; y < BOARD_SIZE.y; y++) {
+            for (let x = 0; x < BOARD_SIZE.x; x++) {                
+                if (isBlackCase(x, y)) {
+                    const offset = getTopLeftCorner(x, y);
+                    this.ctx.fillRect(offset.x, offset.y, boardScale.x, boardScale.y);
+                }
+            }
+        }
+    }
+
+    drawToken = (t: Token) => {
+        const center = getCenter(t.position.x, t.position.y);
+        const radius = boardScale.scale(0.4);
+
+        this.ctx.fillStyle = t.color;
+        this.ctx.strokeStyle = "black";
+
+        this.ctx.beginPath();
+        this.ctx.ellipse(center.x, center.y, radius.x, radius.y, 0, 0, 2*Math.PI);
+        this.ctx.fill();
+        this.ctx.stroke();
+    }
+}
+
+function createTokens(bottomColor: string, topColor: string) {
+    const topTokens: Token[] = [];
+    const bottomTokens: Token[] = [];
+
+    for (let y = 0; y < BOARD_SIZE.y; y++) {
+        for (let x = 0; x < BOARD_SIZE.x; x++) {
+            if (isBlackCase(x, y)) {
+                if (y < 3) {
+                    topTokens.push(new Token(topColor, new Vec2(x, y)));
+                }
+                else if (y > 4) {
+                    bottomTokens.push(new Token(bottomColor, new Vec2(x, y)));
+                }
+            }
+        }
+    }
+
+
+    return {
+        top: topTokens,
+        bot: bottomTokens
+    }
+}
+
+function isBlackCase(x: number, y: number) {
+    return (x+y) % 2 === 1;
+}
+
+function getTopLeftCorner(x: number, y: number) {
+    return boardPosition.add(new Vec2(x, y).scale(boardScale));
+}
+
+function getCenter(x: number, y: number) {
+    return getTopLeftCorner(x, y).add(boardScale.scale(0.5));
 }
