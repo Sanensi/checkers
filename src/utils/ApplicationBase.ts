@@ -34,8 +34,8 @@ export abstract class ApplicationBase {
             this.canvas.width = w;
             this.canvas.height = h;
         
-            this.draw();
             this.resize(w, h);
+            this.draw();
         }
 
         window.addEventListener('resize', resize);
