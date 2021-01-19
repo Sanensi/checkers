@@ -1,7 +1,6 @@
-import { Token } from "./Application";
 import { Vec2 } from "./utils/Vec2";
 
-export class Display {
+export class BoardDrawer {
     private boardPosition: Vec2;
     private boardScale: Vec2;
 
@@ -13,6 +12,7 @@ export class Display {
     drawBoard() {
         this.ctx.fillStyle = "white";
         this.ctx.strokeStyle = "black";
+        this.ctx.lineWidth = 1;
         const fullSize = this.size.scale(this.boardScale);
         this.ctx.fillRect(this.boardPosition.x, this.boardPosition.y, fullSize.x, fullSize.y);
         this.ctx.strokeRect(this.boardPosition.x, this.boardPosition.y, fullSize.x, fullSize.y);
@@ -28,16 +28,18 @@ export class Display {
         }
     }
 
-    drawToken = (t: Token) => {
-        const center = this.getCenter(t.position.x, t.position.y);
+    drawToken(p: Vec2, fill: string, opacity = 1,  stroke = "black", lineWidth = 1) {
+        const center = this.getCenter(p.x, p.y);
         const radius = this.boardScale.scale(0.4);
-
-        this.ctx.fillStyle = t.color;
-        this.ctx.strokeStyle = "black";
-
+    
         this.ctx.beginPath();
         this.ctx.ellipse(center.x, center.y, radius.x, radius.y, 0, 0, 2*Math.PI);
+        this.ctx.fillStyle = fill;
+        this.ctx.strokeStyle = stroke;
+        this.ctx.lineWidth = lineWidth;
+        this.ctx.globalAlpha = opacity;
         this.ctx.fill();
+        this.ctx.globalAlpha = 1;
         this.ctx.stroke();
     }
 
@@ -62,5 +64,9 @@ export class Display {
     
     private getCenter(x: number, y: number) {
         return this.getTopLeftCorner(x, y).add(this.boardScale.scale(0.5));
+    }
+
+    pixelToBoardCoordinates(p: Vec2) {
+        return p.substract(this.boardPosition).divide(this.boardScale).map(Math.floor);
     }
 }
