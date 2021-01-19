@@ -16,7 +16,7 @@ export class Board {
         this.tiles[this.indexOf(x, y)] = t;
     }
 
-    isReachable(x: number, y: number) {
+    isEmpty(x: number, y: number) {
         return this.inside(x, y) && this.get(x, y) === undefined;
     }
 
