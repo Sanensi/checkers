@@ -28,7 +28,7 @@ export class BoardDrawer {
         }
     }
 
-    drawToken(p: Vec2, fill: string, opacity = 1,  stroke = "black", lineWidth = 1) {
+    drawToken(p: Vec2, fill: string, fillAlpha = 1,  stroke = "black", lineWidth = 1, strokeAlpha = 1) {
         const center = this.getCenter(p.x, p.y);
         const radius = this.boardScale.scale(0.4);
     
@@ -37,10 +37,11 @@ export class BoardDrawer {
         this.ctx.fillStyle = fill;
         this.ctx.strokeStyle = stroke;
         this.ctx.lineWidth = lineWidth;
-        this.ctx.globalAlpha = opacity;
+        this.ctx.globalAlpha = fillAlpha;
         this.ctx.fill();
-        this.ctx.globalAlpha = 1;
+        this.ctx.globalAlpha = strokeAlpha;
         this.ctx.stroke();
+        this.ctx.globalAlpha = 1;
     }
 
     resizeAndRecenter(w: number, h: number) {
