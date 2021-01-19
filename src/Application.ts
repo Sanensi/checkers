@@ -23,8 +23,9 @@ export class Application extends ApplicationBase {
 
         if (game.selectedToken !== undefined) {
             this.display.drawToken(game.selectedToken.position, "", 0, "lime", 3);
-            game.selectedTokenMoves.forEach(m => this.display.drawToken(m, game.currentPlayer.color, 0.1));
         }
+
+        game.selectedTokenMoves.forEach(m => this.display.drawToken(m, game.currentPlayer.color, 0.1));
     }
 
     resize(w: number, h: number) {
@@ -33,17 +34,6 @@ export class Application extends ApplicationBase {
 
     mouseup = (e: MouseEvent) => {
         const p = this.display.pixelToBoardCoordinates(new Vec2(e.clientX, e.clientY));
-
-        if (game.selectedTokenMoves.some(m => m.equals(p))) {
-            game.moveToken(game.selectedToken, p);
-            game.swapPlayer();
-            game.selectedToken = undefined;
-            game.selectedTokenMoves = [];
-        }
-        else {
-            game.selectedToken = game.currentPlayer.tokens.find(t => t.position.equals(p));
-            game.selectedTokenMoves = game.getMovementBase(game.selectedToken, game.currentPlayer.direction)
-                .filter(m => game.board.isEmpty(m.x, m.y));
-        }
+        game.click(p);
     }
 }

@@ -3,6 +3,7 @@ import { Token } from "./Token";
 import { Vec2 } from "../utils/Vec2";
 import { Direction, Player } from "./Player";
 
+
 export class Game {
     public currentPlayer: Player;
     public selectedToken: Token;
@@ -15,15 +16,62 @@ export class Game {
         readonly board: Board
     ) { }
 
-    public moveToken(t: Token, to: Vec2) {
-        if (this.board.isEmpty(to.x, to.y)) {
-            this.board.set(t.position.x, t.position.y, undefined);
-            this.board.set(to.x, to.y, t);
-            t.position = to;
+    public click(p: Vec2) {
+        if (!this.selectedTokenMoves.some(m => m.equals(p))) {
+            this.selectToken(p);
+        }
+        else if (this.capturableTokens.length === 0) {
+            this.moveToken(this.selectedToken, p);
+        }
+        else {
+            this.captureToken(this.selectedToken, p);
         }
     }
 
-    public getMovementBase(t: Token, dir: Direction) {
+    private selectToken(p: Vec2) {
+        this.selectedToken = this.currentPlayer.tokens.find(t => t.position.equals(p));
+
+        if (this.capturableTokens.length !== 0) {
+            const capturables = this.getCapturableTokens(this.selectedToken, this.currentPlayer.direction)
+                .filter(t => this.capturableTokens.includes(t));
+
+            this.selectedTokenMoves = capturables.map(t => this.nextSquareOver(this.selectedToken.position, t.position));
+        }
+        else {
+            this.selectedTokenMoves = this.getMovementBase(this.selectedToken, this.currentPlayer.direction)
+                .filter(m => this.board.isEmpty(m.x, m.y));
+        }
+    }
+
+    private moveToken(t: Token, to: Vec2) {
+        this.board.set(t.position.x, t.position.y, undefined);
+        this.board.set(to.x, to.y, t);
+        t.position = to;
+
+        this.swapPlayer();
+    }
+
+    private captureToken(t: Token, to: Vec2) {
+        const sib = this.squareInBetween(t.position, to);
+        const capturedToken = this.board.get(sib.x, sib.y);
+        const other = this.getOppositePlayer();
+
+        other.tokens = other.tokens.filter(t => t !== capturedToken);
+        this.board.set(sib.x, sib.y, undefined);
+
+        this.board.set(t.position.x, t.position.y, undefined);
+        this.board.set(to.x, to.y, t);
+        t.position = to;
+
+        this.capturableTokens = this.getCapturableTokens(t, this.currentPlayer.direction);
+        this.selectedTokenMoves = this.capturableTokens.map(t => this.nextSquareOver(this.selectedToken.position, t.position));
+
+        if (this.capturableTokens.length === 0) {
+            this.swapPlayer();
+        } 
+    }
+
+    private getMovementBase(t: Token, dir: Direction) {
         if (t === undefined)
             return [];
 
@@ -60,12 +108,28 @@ export class Game {
         return b.scale(2).substract(a);
     }
 
-    public swapPlayer() {
+    private squareInBetween(a: Vec2, b: Vec2) {
+        if (!b.substract(a).map(Math.abs).equals(new Vec2(2, 2))) {
+            throw new Error("a and b must be one square appart diagonally");
+        }
+
+        return b.add(a).scale(0.5);
+    }
+
+    private swapPlayer() {
+        this.currentPlayer = this.getOppositePlayer();
+        this.selectedToken = undefined;
+        this.selectedTokenMoves = [];
+        this.capturableTokens = this.currentPlayer.tokens
+            .reduce((acc, t) => [...acc, ...this.getCapturableTokens(t, this.currentPlayer.direction)], new Array<Token>());
+    }
+
+    private getOppositePlayer() {
         if (this.currentPlayer === this.player1) {
-            this.currentPlayer = this.player2;
+            return this.player2;
         }
         else {
-            this.currentPlayer = this.player1;
+            return this.player1;
         }
     }
 
