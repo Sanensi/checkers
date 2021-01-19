@@ -12,7 +12,7 @@ export class Application extends ApplicationBase {
 
     start() {
         this.display = new BoardDrawer(Board.size, this.ctx);
-        this.canvas.addEventListener("mouseup", this.mouseup);
+        this.canvas.addEventListener("pointerup", this.pointerUp);
     }
 
     draw() {
@@ -34,7 +34,7 @@ export class Application extends ApplicationBase {
         this.display.resizeAndRecenter(w, h);
     }
 
-    mouseup = (e: MouseEvent) => {
+    pointerUp = (e: PointerEvent) => {
         const p = this.display.pixelToBoardCoordinates(new Vec2(e.clientX, e.clientY));
         game.click(p);
     }
