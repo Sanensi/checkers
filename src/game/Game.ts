@@ -47,6 +47,7 @@ export class Game {
         this.board.set(t.position.x, t.position.y, undefined);
         this.board.set(to.x, to.y, t);
         t.position = to;
+        this.promote(t);
 
         this.swapPlayer();
     }
@@ -62,6 +63,7 @@ export class Game {
         this.board.set(t.position.x, t.position.y, undefined);
         this.board.set(to.x, to.y, t);
         t.position = to;
+        this.promote(t);
 
         this.capturableTokens = this.getCapturableTokens(t, this.currentPlayer.direction);
         this.selectedTokenMoves = this.capturableTokens.map(t => this.nextSquareOver(this.selectedToken.position, t.position));
@@ -69,6 +71,13 @@ export class Game {
         if (this.capturableTokens.length === 0) {
             this.swapPlayer();
         } 
+    }
+
+    private promote(t: Token) {
+        if ((this.currentPlayer.direction === Direction.up && t.position.y === 0)
+         || (this.currentPlayer.direction === Direction.down && t.position.y === 7)) {
+            t.promoted = true;
+        }
     }
 
     private getMovementBase(t: Token, dir: Direction) {

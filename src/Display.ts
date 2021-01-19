@@ -35,7 +35,7 @@ export class BoardDrawer {
         this.ctx.strokeRect(offset.x, offset.y, this.boardScale.x, this.boardScale.y);
     }
 
-    drawToken(p: Vec2, fill: string, fillAlpha = 1, stroke = "black", lineWidth = 1, strokeAlpha = 1) {
+    drawCircle(p: Vec2, fill: string, fillAlpha = 1, stroke = "black", lineWidth = 1, strokeAlpha = 1) {
         const center = this.getCenter(p.x, p.y);
         const radius = this.boardScale.scale(0.4);
     
@@ -49,6 +49,17 @@ export class BoardDrawer {
         this.ctx.globalAlpha = strokeAlpha;
         this.ctx.stroke();
         this.ctx.globalAlpha = 1;
+    }
+
+    drawCrown(p: Vec2): void {
+        const center = this.getCenter(p.x, p.y);
+        const size = this.boardScale.scale(0.3).x;
+        
+        this.ctx.fillStyle = "white";
+        this.ctx.font = `${size}px serif`;
+        this.ctx.textAlign = "center"; 
+        this.ctx.textBaseline = "middle";
+        this.ctx.fillText("👑", center.x, center.y);
     }
 
     resizeAndRecenter(w: number, h: number) {

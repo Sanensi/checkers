@@ -18,13 +18,15 @@ export class Application extends ApplicationBase {
     draw() {
         this.clear();
         this.display.drawBoard();
-        game.player1.tokens.forEach(t => this.display.drawToken(t.position, game.player1.color));
-        game.player2.tokens.forEach(t => this.display.drawToken(t.position, game.player2.color));
+        game.player1.tokens.forEach(t => this.display.drawCircle(t.position, game.player1.color));
+        game.player2.tokens.forEach(t => this.display.drawCircle(t.position, game.player2.color));
+        game.player1.tokens.filter(t => t.promoted).forEach(t => this.display.drawCrown(t.position));
+        game.player2.tokens.filter(t => t.promoted).forEach(t => this.display.drawCrown(t.position));
         game.capturableTokens.forEach(t => this.display.highlightSquare(t.position));
-        game.selectedTokenMoves.forEach(m => this.display.drawToken(m, game.currentPlayer.color, 0.1));
+        game.selectedTokenMoves.forEach(m => this.display.drawCircle(m, game.currentPlayer.color, 0.1));
 
         if (game.selectedToken !== undefined) {
-            this.display.drawToken(game.selectedToken.position, "", 0, "lime", 3);
+            this.display.drawCircle(game.selectedToken.position, "", 0, "lime", 3);
         }
     }
 
