@@ -28,7 +28,14 @@ export class BoardDrawer {
         }
     }
 
-    drawToken(p: Vec2, fill: string, fillAlpha = 1,  stroke = "black", lineWidth = 1, strokeAlpha = 1) {
+    highlightSquare(p: Vec2, stroke = "red", lineWidth = 3) {
+        const offset = this.getTopLeftCorner(p.x, p.y);
+        this.ctx.strokeStyle = stroke;
+        this.ctx.lineWidth = lineWidth;
+        this.ctx.strokeRect(offset.x, offset.y, this.boardScale.x, this.boardScale.y);
+    }
+
+    drawToken(p: Vec2, fill: string, fillAlpha = 1, stroke = "black", lineWidth = 1, strokeAlpha = 1) {
         const center = this.getCenter(p.x, p.y);
         const radius = this.boardScale.scale(0.4);
     
