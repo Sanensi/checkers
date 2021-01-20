@@ -1,16 +1,23 @@
 {
-	"compilerOptions": {
-		"target": "ES6",
-		"lib": [
-			"DOM",
-			"ES2019"
-		],
-		"moduleResolution": "node"
-	},
 	"include": [
 		"./src/**/*.ts"
 	],
 	"exclude": [
-		"node_modules"
-	]
+		"node_modules",
+		"./src/client"
+	],
+	"compilerOptions": {
+		"rootDir": "./src",
+		"outDir": "./build/prod",
+		"lib": [
+			"DOM",
+			"ES2019"
+		],
+		"target": "ES6",
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true
+	}
 }
