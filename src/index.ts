@@ -1,5 +1,9 @@
-import { Application } from "./Application";
+import { Application } from "./app/Application";
+import { Game } from "./app/game/Game";
 
 const canvas = document.querySelector("canvas");
-const a = new Application(canvas);
+const game = Game.initialize("blue", "red");
+game.currentPlayer = game.player1;
+
+const a = new Application(game, canvas);
 a.init();
