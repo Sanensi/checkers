@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "webpack serve --config webpack.dev.js --open --hot",
     "build": "webpack --config webpack.prod.js --progress",
-    "start": "http-server build/prod"
+    "start": "http-server build/prod/client"
   },
   "author": "William Picard",
   "dependencies": {
