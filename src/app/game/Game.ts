@@ -14,7 +14,9 @@ export class Game {
         readonly player1: Player,
         readonly player2: Player,
         readonly board: Board
-    ) { }
+    ) {
+        this.currentPlayer = player1;
+    }
 
     public click(p: Vec2) {
         if (!this.selectedTokenMoves.some(m => m.equals(p))) {

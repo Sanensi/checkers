@@ -39,7 +39,9 @@ export class Application extends ApplicationBase {
     }
 
     protected pointerUp = (e: PointerEvent) => {
-        const p = this.display.pixelToBoardCoordinates(new Vec2(e.clientX, e.clientY));
+        const rect = this.canvas.getBoundingClientRect();
+        const cp = new Vec2(e.clientX, e.clientY).substract(new Vec2(rect.x, rect.y));
+        const p = this.display.pixelToBoardCoordinates(cp);
         this.game.click(p);
     }
 }

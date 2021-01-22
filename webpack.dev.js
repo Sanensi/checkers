@@ -12,6 +12,7 @@ module.exports = merge(common, {
     filename: 'app.js'
   },
   devServer: {
-    contentBase: outputPath
+    contentBase: path.join(__dirname, 'src', 'client'),
+    watchContentBase: true
   }
 });
