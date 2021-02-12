@@ -7,18 +7,25 @@
   <link rel="icon"
     href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="-0.1em" y=".9em" font-size="85">👑</text></svg>'>
   <title>Checkers</title>
+
+  <script>
+    window.addEventListener('resize', () => {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    });
+  </script>
 </head>
 
 <body>
-  <div class="hero is-fullheight">
+  <div id="menu-root" class="hero is-fullheight">
     <div class="hero-body">
-      <div id="menu-root" class="container is-fluid is-flex columns is-centered">
+      <div class="container is-fluid is-flex columns is-centered">
         <div class="box column is-one-quarter is-three-quarters-mobile has-text-centered">
           <h1 class="title block">
             Checkers
           </h1>
   
-          <div id="main" class="">
+          <div id="main-menu" class="">
             <div class="control block">
               <button id="local-btn" class="button is-fullwidth">Local Game</button>
             </div>
@@ -73,10 +80,13 @@
           </div>
         </div>
       </div>
-      
-      <canvas id="c" class="is-hidden"></canvas>
     </div>
   </div>
+
+  <div id="game" class="is-hidden">
+    <canvas id="c"></canvas>
+  </div>
+
 </body>
 
 </html>

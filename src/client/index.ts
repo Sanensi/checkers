@@ -2,10 +2,11 @@ import "./style.scss";
 import { Application } from "../app/Application";
 import { Game } from "../app/game/Game";
 
+const gameRoot = document.getElementById("game");
 const canvas = document.querySelector("canvas");
 
 const menuRoot = document.getElementById("menu-root");
-const main = document.getElementById("main");
+const main = document.getElementById("main-menu");
 const local = document.getElementById("local");
 const online = document.getElementById("online");
 const panels = [main, local, online];
@@ -33,7 +34,7 @@ const onlineColor = document.getElementById("online-color") as HTMLInputElement;
 
 function launchLocal() {
     hide(menuRoot);
-    show(canvas);
+    show(gameRoot);
     
     const game = Game.initialize(p1Color.value, p2Color.value);
     const app = new Application(game, canvas);
