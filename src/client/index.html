@@ -7,86 +7,10 @@
   <link rel="icon"
     href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="-0.1em" y=".9em" font-size="85">👑</text></svg>'>
   <title>Checkers</title>
-
-  <script>
-    window.addEventListener('resize', () => {
-      let vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    });
-  </script>
 </head>
 
 <body>
-  <div id="menu-root" class="hero is-fullheight">
-    <div class="hero-body">
-      <div class="container is-fluid is-flex columns is-centered">
-        <div class="box column is-one-quarter is-three-quarters-mobile has-text-centered">
-          <h1 class="title block">
-            Checkers
-          </h1>
-  
-          <div id="main-menu" class="">
-            <div class="control block">
-              <button id="local-btn" class="button is-fullwidth">Local Game</button>
-            </div>
-  
-            <div class="control block">
-              <button id="online-btn" class="button is-fullwidth">Online Game</button>
-            </div>
-          </div>
-  
-          <div id="local" class="has-text-left is-hidden">
-            <label class="label">Player 1</label>
-            <div class="field is-grouped">
-              <p class="control is-expanded">
-                <input id="p1-name" class="input" type="text" placeholder="Name">
-              </p>
-              <p class="control">
-                <input id="p1-color" class="input color" type="color" value="#0000ff">
-              </p>
-            </div>
-  
-            <label class="label">Player 2</label>
-            <div class="field is-grouped">
-              <p class="control is-expanded">
-                <input id="p2-name" class="input" type="text" placeholder="Name">
-              </p>
-              <p class="control">
-                <input id="p2-color" class="input color" type="color" value="#ff0000">
-              </p>
-            </div>
-  
-            <div class="buttons is-centered">
-              <button id="start-local-btn" class="button is-primary">Start</button>
-              <button name="back-btn" class="button">Back</button>
-            </div>
-          </div>
-  
-          <div id="online" class="has-text-left is-hidden">
-            <label class="label">Display Name and Color</label>
-            <div class="field is-grouped">
-              <p class="control is-expanded">
-                <input id="online-name" class="input" type="text" placeholder="Name">
-              </p>
-              <p class="control">
-                <input id="online-color" class="input color" type="color" value="#0000ff">
-              </p>
-            </div>
-  
-            <div class="buttons is-centered">
-              <button id="start-online-btn" class="button is-primary">Start</button>
-              <button name="back-btn" class="button">Back</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="game" class="is-hidden">
-    <canvas id="c"></canvas>
-  </div>
-
+  <div id="root"></div>
 </body>
 
 </html>

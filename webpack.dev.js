@@ -9,10 +9,12 @@ module.exports = merge(common, {
   devtool: 'inline-source-map',
   output: {
     path: outputPath,
-    filename: 'app.js'
+    filename: 'app.js',
+    publicPath: '/'
   },
   devServer: {
-    contentBase: path.join(__dirname, 'src', 'client'),
-    watchContentBase: true
+    contentBase: outputPath,
+    watchContentBase: true,
+    historyApiFallback: true,
   }
 });

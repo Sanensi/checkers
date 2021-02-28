@@ -7,12 +7,12 @@ const appPath = path.join(__dirname, 'src', 'app');
 const nodeModulesPath = path.join(__dirname, 'node_modules');
 
 module.exports = {
-  entry: path.join(clientPath, 'index.ts'),
+  entry: path.join(clientPath, 'index.tsx'),
 
   module: {
     rules: [
       {
-        test: /\.ts?$/,
+        test: /\.tsx?$/,
         use: {
           loader: 'ts-loader',
           options: {
@@ -49,7 +49,7 @@ module.exports = {
       clientPath,
       appPath
     ],
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.tsx', '.js'],
   },
 
   plugins: [
