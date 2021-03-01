@@ -8,6 +8,7 @@ module.exports = merge(common, {
   mode: 'production',
   output: {
     path: outputPath,
-    filename: 'app.js'
+    filename: 'app.js',
+    publicPath: '/'
   }
 });
