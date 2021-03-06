@@ -1,7 +1,6 @@
 import { Board } from "./Board";
-import { Token } from "./Token";
 import { Vec2 } from "../utils/Vec2";
-import { Direction, Player } from "./Player";
+import { Direction, Player, Token } from "./GameData";
 
 
 export class Game {
@@ -63,10 +62,10 @@ export class Game {
         this.board.set(t.position.x, t.position.y, undefined);
         this.board.set(to.x, to.y, t);
         t.position = to;
-        this.promote(t);
 
         this.capturableTokens = this.getCapturableTokens(t, this.currentPlayer.direction);
         this.selectedTokenMoves = this.capturableTokens.map(t => this.nextSquareOver(this.selectedToken.position, t.position));
+        this.promote(t);
 
         if (this.capturableTokens.length === 0) {
             this.swapPlayer();

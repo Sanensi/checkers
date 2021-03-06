@@ -1,5 +1,5 @@
 import { Vec2 } from "../utils/Vec2";
-import { Token } from "./Token";
+import { Token } from "./GameData";
 
 
 export class Board {

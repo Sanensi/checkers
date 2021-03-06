@@ -1,4 +1,7 @@
 import { Link, Switch, Route, useRouteMatch } from "react-router-dom";
+import { useState } from "react";
+
+import { defaultGameConfig } from "../../app/game/GameData";
 import { MenuBox } from "./Menus";
 import { Game } from "./Game";
 
@@ -10,7 +13,7 @@ export function Local() {
       <Route exact path={path}>
         <LocalOptions />
       </Route>
-      <Route exact path={`${path}/game`}>
+      <Route path={`${path}/game`}>
         <Game />
       </Route>
     </Switch>
@@ -19,6 +22,7 @@ export function Local() {
 
 function LocalOptions() {
   const { url } = useRouteMatch();
+  const [gameConfig, setGameConfig] = useState(defaultGameConfig);
 
   return (
     <MenuBox>
@@ -26,20 +30,54 @@ function LocalOptions() {
         <label className="label">Player 1</label>
         <div className="field is-grouped">
           <p className="control is-expanded">
-            <input id="p1-name" className="input" type="text" placeholder="Name"></input>
+            <input
+              className="input"
+              type="text"
+              placeholder="Name"
+              value={gameConfig.player1.name}
+              onChange={e => setGameConfig(gc => ({
+                ...gc,
+                player1: { ...gc.player1, name: e.target.value }
+              }))}
+            />
           </p>
           <p className="control">
-            <input id="p1-color" className="input color" type="color" defaultValue="#0000ff"></input>
+            <input
+              className="input color"
+              type="color"
+              value={gameConfig.player1.color}
+              onChange={e => setGameConfig(gc => ({
+                ...gc,
+                player1: { ...gc.player1, color: e.target.value }
+              }))}
+            />
           </p>
         </div>
 
         <label className="label">Player 2</label>
         <div className="field is-grouped">
           <p className="control is-expanded">
-            <input id="p2-name" className="input" type="text" placeholder="Name"></input>
+            <input
+              className="input"
+              type="text"
+              placeholder="Name"
+              value={gameConfig.player2.name}
+              onChange={e => setGameConfig(gc => ({
+                ...gc,
+                player2: { ...gc.player2, name: e.target.value }
+              }))}
+            />
           </p>
           <p className="control">
-            <input id="p2-color" className="input color" type="color" defaultValue="#ff0000"></input>
+            <input
+              className="input color"
+              type="color"
+              value={gameConfig.player2.color}
+              onChange={e => setGameConfig(gc => ({
+                ...gc,
+                player2: { ...gc.player2, color: e.target.value }
+              }))}
+            />
           </p>
         </div>
 
