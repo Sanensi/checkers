@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useRef } from "react"
 import { Application } from "../../app/Application";
-import { Game as G } from "../../app/game/Game";
+import { createGame } from "../../app/game/GameFactory";
 
 export function Game() {
-  const c = useRef<HTMLCanvasElement>();
+  const canvasRef = useRef<HTMLCanvasElement>();
 
   useEffect(() => {
-    const g = G.initialize("blue", "red");
-    const app = new Application(g, c.current);
+    const game = createGame("blue", "red");
+    const app = new Application(game, canvasRef.current);
     app.init();
   }, [])
 
@@ -18,7 +18,7 @@ export function Game() {
         width: "100%",
         height: "100%"
       }}
-      ref={c}
+      ref={canvasRef}
     >
     </canvas>
   )

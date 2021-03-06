@@ -5,7 +5,6 @@ import { Direction, Player } from "./Player";
 
 
 export class Game {
-    public currentPlayer: Player;
     public selectedToken: Token;
     public selectedTokenMoves: Vec2[] = [];
     public capturableTokens: Token[] = [];
@@ -13,10 +12,9 @@ export class Game {
     constructor(
         readonly player1: Player,
         readonly player2: Player,
-        readonly board: Board
-    ) {
-        this.currentPlayer = player1;
-    }
+        readonly board: Board,
+        public currentPlayer: Player
+    ) { }
 
     public click(p: Vec2) {
         if (!this.selectedTokenMoves.some(m => m.equals(p))) {
@@ -142,30 +140,5 @@ export class Game {
         else {
             return this.player1;
         }
-    }
-
-    static initialize(bottomColor: string, topColor: string) {
-        const bottomPlayer = new Player(Direction.up, bottomColor);
-        const topPlayer = new Player(Direction.down, topColor);
-        const board = new Board();
-
-        for (let y = 0; y < Board.size.y; y++) {
-            for (let x = 0; x < Board.size.x; x++) {
-                if ((x + y) % 2 === 1) {
-                    if (y < 3) {
-                        const t = new Token(new Vec2(x, y), topPlayer);
-                        topPlayer.tokens.push(t);
-                        board.set(x, y, t);
-                    }
-                    else if (y > 4) {
-                        const t = new Token(new Vec2(x, y), bottomPlayer);
-                        bottomPlayer.tokens.push(t);
-                        board.set(x, y, t);
-                    }
-                }
-            }
-        }
-
-        return new Game(bottomPlayer, topPlayer, board);
     }
 }
