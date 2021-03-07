@@ -1,13 +1,18 @@
 import { useEffect } from "react";
 import { useRef } from "react"
 import { Application } from "../../app/Application";
+import { GameConfig } from "../../app/game/GameData";
 import { createGame } from "../../app/game/GameFactory";
 
-export function Game() {
+interface Props {
+  gameConfig: GameConfig;
+}
+
+export function Game({ gameConfig }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>();
 
   useEffect(() => {
-    const game = createGame("blue", "red");
+    const game = createGame(gameConfig);
     const app = new Application(game, canvasRef.current);
     app.init();
   }, [])

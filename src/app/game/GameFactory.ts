@@ -1,11 +1,11 @@
 import { Vec2 } from "../utils/Vec2";
 import { Board } from "./Board";
 import { Game } from "./Game";
-import { Direction, Player, Token } from "./GameData";
+import { Direction, GameConfig, Player, Token } from "./GameData";
 
-function createGame(bottomColor: string, topColor: string) {
-  const bottomPlayer: Player = { name: "Player 1", color: bottomColor, direction: Direction.up, tokens: [] };
-  const topPlayer: Player = { name: "Player 2", color: topColor, direction: Direction.down, tokens: [] };
+function createGame(gameConfig: GameConfig) {
+  const bottomPlayer: Player = { ...gameConfig.player1, direction: Direction.up, tokens: [] };
+  const topPlayer: Player = { ...gameConfig.player2, direction: Direction.down, tokens: [] };
   const board = new Board();
 
   for (let y = 0; y < Board.size.y; y++) {

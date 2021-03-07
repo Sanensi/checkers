@@ -1,28 +1,38 @@
 import { Link, Switch, Route, useRouteMatch } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
 
-import { defaultGameConfig } from "../../app/game/GameData";
+import { defaultGameConfig, GameConfig } from "../../app/game/GameData";
 import { MenuBox } from "./Menus";
 import { Game } from "./Game";
 
 export function Local() {
   const { path } = useRouteMatch();
+  const [gameConfig, setGameConfig] = useState(defaultGameConfig);
 
   return (
     <Switch>
       <Route exact path={path}>
-        <LocalOptions />
+        <LocalOptions
+          gameConfig={gameConfig}
+          onGameConfigUpdate={setGameConfig}
+        />
       </Route>
       <Route path={`${path}/game`}>
-        <Game />
+        <Game
+          gameConfig={gameConfig}
+        />
       </Route>
     </Switch>
   )
 }
 
-function LocalOptions() {
+interface Props {
+  gameConfig: GameConfig;
+  onGameConfigUpdate: React.Dispatch<React.SetStateAction<GameConfig>>;
+}
+
+function LocalOptions({ gameConfig, onGameConfigUpdate }: Props) {
   const { url } = useRouteMatch();
-  const [gameConfig, setGameConfig] = useState(defaultGameConfig);
 
   return (
     <MenuBox>
@@ -35,7 +45,7 @@ function LocalOptions() {
               type="text"
               placeholder="Name"
               value={gameConfig.player1.name}
-              onChange={e => setGameConfig(gc => ({
+              onChange={e => onGameConfigUpdate(gc => ({
                 ...gc,
                 player1: { ...gc.player1, name: e.target.value }
               }))}
@@ -46,7 +56,7 @@ function LocalOptions() {
               className="input color"
               type="color"
               value={gameConfig.player1.color}
-              onChange={e => setGameConfig(gc => ({
+              onChange={e => onGameConfigUpdate(gc => ({
                 ...gc,
                 player1: { ...gc.player1, color: e.target.value }
               }))}
@@ -62,7 +72,7 @@ function LocalOptions() {
               type="text"
               placeholder="Name"
               value={gameConfig.player2.name}
-              onChange={e => setGameConfig(gc => ({
+              onChange={e => onGameConfigUpdate(gc => ({
                 ...gc,
                 player2: { ...gc.player2, name: e.target.value }
               }))}
@@ -73,7 +83,7 @@ function LocalOptions() {
               className="input color"
               type="color"
               value={gameConfig.player2.color}
-              onChange={e => setGameConfig(gc => ({
+              onChange={e => onGameConfigUpdate(gc => ({
                 ...gc,
                 player2: { ...gc.player2, color: e.target.value }
               }))}

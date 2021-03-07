@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
+import { defaultGameConfig } from "../../app/game/GameData";
 import { Game } from "./Game";
 import { MenuBox } from "./Menus";
 
@@ -12,7 +13,9 @@ export function Online() {
         <OnlineOptions />
       </Route>
       <Route exact path={`${path}/game`}>
-        <Game />
+        <Game
+          gameConfig={defaultGameConfig}
+        />
       </Route>
     </Switch>
   )
