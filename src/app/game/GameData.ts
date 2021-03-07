@@ -15,7 +15,7 @@ export type Player = {
   tokens: Token[];
 }
 
-type PlayerConfig = Omit<Player, "direction" | "tokens">;
+export type PlayerConfig = Omit<Player, "direction" | "tokens">;
 
 export enum StartingPlayer { P1, P2, Random }
 
