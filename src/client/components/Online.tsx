@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import { defaultGameConfig } from "../../app/game/GameData";
 import { Game } from "./Game";
-import { MenuBox } from "./Menus";
+import { MenuBox, PlayerConfiguration } from "./Menus";
 
 export function Online() {
   const { path } = useRouteMatch();
@@ -27,15 +27,11 @@ function OnlineOptions() {
   return (
     <MenuBox>
       <div className="has-text-left">
-        <label className="label">Display Name and Color</label>
-        <div className="field is-grouped">
-          <p className="control is-expanded">
-            <input id="online-name" className="input" type="text" placeholder="Name"></input>
-          </p>
-          <p className="control">
-            <input id="online-color" className="input color" type="color" defaultValue="#0000ff"></input>
-          </p>
-        </div>
+        <PlayerConfiguration
+          label="Display Name and Color"
+          player={defaultGameConfig.player1}
+          onChange={() => {}}
+        />
 
         <div className="buttons is-centered">
           <Link to={`${url}/game`} className="button is-primary">Start</Link>

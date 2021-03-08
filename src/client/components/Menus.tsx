@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { PlayerConfig } from "../../app/game/GameData";
 
 export function MenuBox(props: React.PropsWithChildren<{}>) {
   return (
@@ -31,4 +32,33 @@ export function MainMenu() {
       </div>
     </MenuBox>
   )
+}
+
+export function PlayerConfiguration({ label, player, onChange }: {
+  label: string,
+  player: PlayerConfig,
+  onChange: (p: PlayerConfig) => void
+}) {
+  return <>
+    <label className="label">{label}</label>
+    <div className="field is-grouped">
+      <p className="control is-expanded">
+        <input
+          className="input"
+          type="text"
+          placeholder="Name"
+          value={player.name}
+          onChange={e => onChange({...player, name: e.target.value})}
+        />
+      </p>
+      <p className="control">
+        <input
+          className="input color"
+          type="color"
+          value={player.color}
+          onChange={e => onChange({...player, color: e.target.value})}
+        />
+      </p>
+    </div>
+  </>
 }
