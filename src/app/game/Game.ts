@@ -2,11 +2,14 @@ import { Board } from "./Board";
 import { Vec2 } from "../utils/Vec2";
 import { Direction, Player, Token } from "./GameData";
 
+import { EventEmitter } from "events";
 
 export class Game {
     public selectedToken: Token;
     public selectedTokenMoves: Vec2[] = [];
     public capturableTokens: Token[] = [];
+
+    private eventEmitter = new EventEmitter();
 
     constructor(
         readonly player1: Player,
@@ -25,6 +28,12 @@ export class Game {
         else {
             this.captureToken(this.selectedToken, p);
         }
+
+        this.eventEmitter.emit('update');
+    }
+
+    public addGameUpdateListener(listener: () => void) {
+        this.eventEmitter.addListener('update', listener);
     }
 
     private selectToken(p: Vec2) {

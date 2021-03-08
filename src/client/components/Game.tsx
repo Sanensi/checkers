@@ -2,10 +2,10 @@ import { faCircle as fasCircle } from "@fortawesome/free-solid-svg-icons";
 import { faCircle as farCircle } from "@fortawesome/free-regular-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useRef } from "react"
 import { Application } from "../../app/Application";
-import { GameConfig, PlayerConfig } from "../../app/game/GameData";
+import { GameConfig, Player, PlayerConfig } from "../../app/game/GameData";
 import { createGame } from "../../app/game/GameFactory";
 
 interface Props {
@@ -13,10 +13,17 @@ interface Props {
 }
 
 export function Game({ gameConfig }: Props) {
+  const [_, forceUpdate] = useReducer(x => x + 1, 0);
+
   const canvasRef = useRef<HTMLCanvasElement>();
+  const game = useRef(createGame(gameConfig)).current;
+
+  const isCurrentPlayer = (player: Player) => player === game.currentPlayer;
+  const tokenCaptured = (player: Player) => 12 - player.tokens.length;
 
   useEffect(() => {
-    const game = createGame(gameConfig);
+    game.addGameUpdateListener(forceUpdate);
+
     const app = new Application(game, canvasRef.current);
     app.init();
   }, [])
@@ -30,10 +37,10 @@ export function Game({ gameConfig }: Props) {
       alignItems: "center"
     }}>
       <PlayerDisplay
-        name={gameConfig.player2.name}
-        color={gameConfig.player2.color}
-        isCurrentPlayer={false}
-        numberCaptured={0}
+        name={game.player2.name}
+        color={game.player2.color}
+        isCurrentPlayer={isCurrentPlayer(game.player2)}
+        numberCaptured={tokenCaptured(game.player1)}
       />
       <canvas
         style={{
@@ -45,10 +52,10 @@ export function Game({ gameConfig }: Props) {
         ref={canvasRef}
       />
       <PlayerDisplay
-        name={gameConfig.player1.name}
-        color={gameConfig.player1.color}
-        isCurrentPlayer={true}
-        numberCaptured={0}
+        name={game.player1.name}
+        color={game.player1.color}
+        isCurrentPlayer={isCurrentPlayer(game.player1)}
+        numberCaptured={tokenCaptured(game.player2)}
       />
     </div>
   )
@@ -67,13 +74,14 @@ function PlayerDisplay({ name, color, isCurrentPlayer, numberCaptured }: PlayerD
       }}
     >
       <p className="is-size-3 my-5">
+        {name}
         <FontAwesomeIcon
           className="mx-3"
           color={color}
           icon={isCurrentPlayer ? fasCircle : farCircle}
           size="sm"
         />
-        {name}: {numberCaptured}
+        {numberCaptured}
       </p>
     </div>
   )
