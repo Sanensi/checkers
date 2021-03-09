@@ -2,13 +2,14 @@ import "./style.scss";
 import React from "react";
 import ReactDOM from "react-dom";
 import { MainMenu } from "./components/Menus";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { Local } from "./components/Local";
 import { Online } from "./components/Online";
 
 function Root() {
   return (
     <BrowserRouter>
+      <RemoveTrailingSlash />
       <Switch>
         <Route exact path="/">
           <MainMenu />
@@ -22,6 +23,15 @@ function Root() {
       </Switch>
     </BrowserRouter>
   )
+}
+
+function RemoveTrailingSlash() {
+  return <Route
+    exact
+    strict
+    path="(.*//+.*)"
+    render={({ location }) => <Redirect to={location.pathname.replace(/\/\/+/g, '/')} />}
+  />
 }
 
 const root = document.getElementById("root");
