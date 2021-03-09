@@ -1,18 +1,20 @@
-import { faCircle as fasCircle } from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useReducer, useState, useRef } from "react";
+import { faCircle as fasCircle, faCog } from "@fortawesome/free-solid-svg-icons";
 import { faCircle as farCircle } from "@fortawesome/free-regular-svg-icons";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useReducer, useState } from "react";
-import { useRef } from "react"
+
 import { Application } from "../../app/Application";
 import { GameConfig, Player, PlayerConfig } from "../../app/game/GameData";
 import { createGame } from "../../app/game/GameFactory";
+import { MenuBox } from "./Menus";
+import { useHistory } from "react-router";
 
 interface Props {
   gameConfig: GameConfig;
 }
 
 export function Game({ gameConfig }: Props) {
+  const history = useHistory();
   const [_, forceUpdate] = useReducer(x => x + 1, 0);
 
   const canvasRef = useRef<HTMLCanvasElement>();
@@ -28,7 +30,7 @@ export function Game({ gameConfig }: Props) {
     app.init();
   }, [])
 
-  return (
+  return <>
     <div style={{
       width: "100%",
       height: "100%",
@@ -58,7 +60,10 @@ export function Game({ gameConfig }: Props) {
         numberCaptured={tokenCaptured(game.player2)}
       />
     </div>
-  )
+    <GameMenu
+      onQuit={() => history.push("/")}
+    />
+  </>
 }
 
 interface PlayerDisplayProps extends PlayerConfig {
@@ -85,4 +90,54 @@ function PlayerDisplay({ name, color, isCurrentPlayer, numberCaptured }: PlayerD
       </p>
     </div>
   )
+}
+
+function GameMenu({ onQuit }: {
+  onQuit: () => void
+}) {
+  const [isActive, setIsActive] = useState(false);
+
+  const isActiveClass = isActive ? "is-active" : "";
+
+  if (isActive) {
+    return <div className={"modal " + isActiveClass}>
+      <div className="modal-background" />
+      <MenuBox title="Options" style={{ width: "100%" }}>
+        <div>
+          <div className="control block">
+            <button
+              className="button is-fullwidth"
+              onClick={() => setIsActive(false)}
+            >
+              Resume
+          </button>
+          </div>
+          <div className="control block">
+            <button
+              className="button is-fullwidth"
+              onClick={onQuit}
+            >
+              Quit
+          </button>
+          </div>
+        </div>
+      </MenuBox>
+    </div>
+  }
+
+  return <button
+    style={{
+      position: "fixed",
+      top: 0,
+      right: 0,
+    }}
+    className="icon button is-rounded m-5 p-4"
+    onClick={() => setIsActive(true)}
+  >
+    <FontAwesomeIcon
+      icon={faCog}
+      size="lg"
+    />
+  </button>
+
 }

@@ -1,16 +1,17 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { PlayerConfig } from "../../app/game/GameData";
 
-export function MenuBox(props: React.PropsWithChildren<{}>) {
+export const MenuBox: React.FC<React.HtmlHTMLAttributes<HTMLDivElement>> = ({className, title, children, ...rest}) => {
   return (
-    <div className="hero is-fullheight">
+    <div className={"hero is-fullheight " + (className ?? "")} {...rest}>
       <div className="hero-body">
         <div className="container is-fluid is-flex columns is-centered">
           <div className="box column is-one-quarter is-three-quarters-mobile has-text-centered">
-            <h1 className="title block">
-              Checkers
-            </h1>
-            {props.children}
+            {title && <h1 className="title block">
+              {title}
+            </h1>}
+            {children}
           </div>
         </div>
       </div>
@@ -20,7 +21,7 @@ export function MenuBox(props: React.PropsWithChildren<{}>) {
 
 export function MainMenu() {
   return (
-    <MenuBox>
+    <MenuBox title="Checkers">
       <div>
         <div className="control block">
           <Link to="/local" className="button is-fullwidth">Local Game</Link>
