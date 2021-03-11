@@ -101,7 +101,7 @@ function GameMenu({ onQuit }: {
 
   if (isActive) {
     return <div className={"modal " + isActiveClass}>
-      <div className="modal-background" />
+      <div className="modal-background" onClick={() => setIsActive(false)} />
       <MenuBox title="Options" style={{ width: "100%" }}>
         <div>
           <div className="control block">
