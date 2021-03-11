@@ -30,6 +30,8 @@ export function Game({ gameConfig }: Props) {
     app.init();
   }, [])
 
+  const [info, setInfo] = useState(`${gameConfig.player1.name} is starting!`);
+
   return <>
     <div style={{
       width: "100%",
@@ -60,9 +62,15 @@ export function Game({ gameConfig }: Props) {
         numberCaptured={tokenCaptured(game.player2)}
       />
     </div>
+
     <GameMenu
       onQuit={() => history.push("/")}
     />
+
+    {info && <InformationDisplay
+      info={info}
+      onClick={() => setInfo(undefined)}
+    />}
   </>
 }
 
@@ -139,5 +147,17 @@ function GameMenu({ onQuit }: {
       size="lg"
     />
   </button>
+}
 
+function InformationDisplay({ info, onClick }: {
+  info: string,
+  onClick: () => void
+}) {
+  return <div className="modal is-active">
+    <div className="modal-background" onClick={onClick} />
+    <MenuBox
+      title={info}
+      style={{width: "100%"}}
+    />
+  </div>
 }
