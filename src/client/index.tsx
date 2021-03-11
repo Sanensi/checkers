@@ -4,7 +4,6 @@ import ReactDOM from "react-dom";
 import { MainMenu } from "./components/Menus";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { Local } from "./components/Local";
-import { Online } from "./components/Online";
 
 function Root() {
   return (
@@ -16,9 +15,6 @@ function Root() {
         </Route>
         <Route path="/local" >
           <Local />
-        </Route>
-        <Route path="/online">
-          <Online />
         </Route>
       </Switch>
     </BrowserRouter>
