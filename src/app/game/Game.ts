@@ -32,8 +32,12 @@ export class Game {
         this.eventEmitter.emit('update');
     }
 
-    public addGameUpdateListener(listener: () => void) {
-        this.eventEmitter.addListener('update', listener);
+    public onUpdate(listener: () => void) {
+        this.eventEmitter.on('update', listener);
+    }
+
+    public onEnd(listener: (winner: string) => void) {
+        this.eventEmitter.on('end', listener);
     }
 
     private selectToken(p: Vec2) {
@@ -139,6 +143,10 @@ export class Game {
         this.selectedTokenMoves = [];
         this.capturableTokens = this.currentPlayer.tokens
             .reduce((acc, t) => [...acc, ...this.getCapturableTokens(t, this.currentPlayer.direction)], new Array<Token>());
+        
+        if (this.currentPlayer.tokens.length === 0) {
+            this.eventEmitter.emit('end', this.getOppositePlayer().name);
+        }
     }
 
     private getOppositePlayer() {

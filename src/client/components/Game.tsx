@@ -20,17 +20,18 @@ export function Game({ gameConfig }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>();
   const game = useRef(createGame(gameConfig)).current;
 
+  const [info, setInfo] = useState(`${gameConfig.player1.name} is starting!`);
+
   const isCurrentPlayer = (player: Player) => player === game.currentPlayer;
   const tokenCaptured = (player: Player) => 12 - player.tokens.length;
 
   useEffect(() => {
-    game.addGameUpdateListener(forceUpdate);
+    game.onUpdate(forceUpdate);
+    game.onEnd(winner => setInfo(`${winner} has won!`))
 
     const app = new Application(game, canvasRef.current);
     app.init();
   }, [])
-
-  const [info, setInfo] = useState(`${gameConfig.player1.name} is starting!`);
 
   return <>
     <div style={{
