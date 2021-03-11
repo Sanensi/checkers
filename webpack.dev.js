@@ -2,16 +2,19 @@ const path = require('path');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common');
 
-const outputPath = path.join(__dirname, 'build', 'dev');
+const outputPath = path.join(__dirname, 'build', 'dev', 'client');
 
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
   output: {
     path: outputPath,
-    filename: 'app.js'
+    filename: 'app.js',
+    publicPath: '/'
   },
   devServer: {
-    contentBase: outputPath
+    contentBase: outputPath,
+    watchContentBase: true,
+    historyApiFallback: true,
   }
 });

@@ -1,16 +1,25 @@
 {
+	"include": [
+		"./src/**/*.ts",
+		"./src/**/*.tsx"
+	],
+	"exclude": [
+		"node_modules",
+		"./src/client"
+	],
 	"compilerOptions": {
-		"target": "ES6",
+		"rootDir": "./src",
+		"outDir": "./build/prod",
 		"lib": [
 			"DOM",
 			"ES2019"
 		],
-		"moduleResolution": "node"
-	},
-	"include": [
-		"./src/**/*.ts"
-	],
-	"exclude": [
-		"node_modules"
-	]
+		"target": "ES6",
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"jsx": "react-jsx",
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true
+	}
 }

@@ -1,19 +1,21 @@
 import { Board } from "./Board";
-import { Token } from "./Token";
 import { Vec2 } from "../utils/Vec2";
-import { Direction, Player } from "./Player";
+import { Direction, Player, Token } from "./GameData";
 
+import { EventEmitter } from "events";
 
 export class Game {
-    public currentPlayer: Player;
     public selectedToken: Token;
     public selectedTokenMoves: Vec2[] = [];
     public capturableTokens: Token[] = [];
 
+    private eventEmitter = new EventEmitter();
+
     constructor(
         readonly player1: Player,
         readonly player2: Player,
-        readonly board: Board
+        readonly board: Board,
+        public currentPlayer: Player
     ) { }
 
     public click(p: Vec2) {
@@ -26,6 +28,16 @@ export class Game {
         else {
             this.captureToken(this.selectedToken, p);
         }
+
+        this.eventEmitter.emit('update');
+    }
+
+    public onUpdate(listener: () => void) {
+        this.eventEmitter.on('update', listener);
+    }
+
+    public onEnd(listener: (winner: string) => void) {
+        this.eventEmitter.on('end', listener);
     }
 
     private selectToken(p: Vec2) {
@@ -63,10 +75,10 @@ export class Game {
         this.board.set(t.position.x, t.position.y, undefined);
         this.board.set(to.x, to.y, t);
         t.position = to;
-        this.promote(t);
 
         this.capturableTokens = this.getCapturableTokens(t, this.currentPlayer.direction);
         this.selectedTokenMoves = this.capturableTokens.map(t => this.nextSquareOver(this.selectedToken.position, t.position));
+        this.promote(t);
 
         if (this.capturableTokens.length === 0) {
             this.swapPlayer();
@@ -131,6 +143,10 @@ export class Game {
         this.selectedTokenMoves = [];
         this.capturableTokens = this.currentPlayer.tokens
             .reduce((acc, t) => [...acc, ...this.getCapturableTokens(t, this.currentPlayer.direction)], new Array<Token>());
+        
+        if (this.currentPlayer.tokens.length === 0) {
+            this.eventEmitter.emit('end', this.getOppositePlayer().name);
+        }
     }
 
     private getOppositePlayer() {
@@ -140,30 +156,5 @@ export class Game {
         else {
             return this.player1;
         }
-    }
-
-    static initialize(bottomColor: string, topColor: string) {
-        const bottomPlayer = new Player(Direction.up, bottomColor);
-        const topPlayer = new Player(Direction.down, topColor);
-        const board = new Board();
-
-        for (let y = 0; y < Board.size.y; y++) {
-            for (let x = 0; x < Board.size.x; x++) {
-                if ((x + y) % 2 === 1) {
-                    if (y < 3) {
-                        const t = new Token(new Vec2(x, y), topPlayer);
-                        topPlayer.tokens.push(t);
-                        board.set(x, y, t);
-                    }
-                    else if (y > 4) {
-                        const t = new Token(new Vec2(x, y), bottomPlayer);
-                        bottomPlayer.tokens.push(t);
-                        board.set(x, y, t);
-                    }
-                }
-            }
-        }
-
-        return new Game(bottomPlayer, topPlayer, board);
     }
 }
