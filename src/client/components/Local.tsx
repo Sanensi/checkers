@@ -26,14 +26,16 @@ export function Local() {
   )
 }
 
-function LocalOptions({ gameConfig, onGameConfigUpdate }: {
+interface Props {
   gameConfig: GameConfig;
   onGameConfigUpdate: React.Dispatch<React.SetStateAction<GameConfig>>;
-}) {
+}
+
+function LocalOptions({ gameConfig, onGameConfigUpdate }: Props) {
   const { url } = useRouteMatch();
 
   return (
-    <MenuBox>
+    <MenuBox title="Local Game">
       <div className="has-text-left">
         <PlayerConfiguration
           label="Player 1"

@@ -28,7 +28,7 @@ export function MainMenu() {
         </div>
 
         <div className="control block">
-          <button className="button is-fullwidth" disabled>Online Game</button>
+          <Link to="/online" className="button is-fullwidth">Online Game</Link>
         </div>
       </div>
     </MenuBox>
