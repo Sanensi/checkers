@@ -3,6 +3,7 @@ import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import { defaultGameConfig, PlayerConfig } from "../../app/game/GameData";
 import { Game } from "./Game";
 import { MenuBox, PlayerConfiguration } from "./Menus";
+import { Lobby } from "./Lobby"
 
 export function Online() {
   const { path } = useRouteMatch();
@@ -14,6 +15,11 @@ export function Online() {
         <OnlineOptions
           playerConfig={playerConfig}
           onPlayerConfigUpdate={setPlayerConfig}
+        />
+      </Route>
+      <Route path={`${path}/lobby`}>
+        <Lobby
+          player={playerConfig}
         />
       </Route>
       <Route path={`${path}/game`}>
@@ -46,7 +52,7 @@ function OnlineOptions({ playerConfig, onPlayerConfigUpdate }: Props) {
         />
 
         <div className="buttons is-centered">
-          <Link to={`${url}/game`} className="button is-primary">Start</Link>
+          <Link to={`${url}/lobby`} className="button is-primary">Start</Link>
           <Link to="/" className="button">Back</Link>
         </div>
       </div>
