@@ -3,7 +3,7 @@ import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import { defaultGameConfig, PlayerConfig } from "../../app/game/GameData";
 import { Game } from "./Game";
 import { MenuBox, PlayerConfiguration } from "./Menus";
-import { Lobby } from "./Lobby"
+import { Lobby } from "./Lobby/Lobby"
 
 export function Online() {
   const { path } = useRouteMatch();

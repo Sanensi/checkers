@@ -1,5 +1,6 @@
 {
   "name": "checkers",
+  "author": "William Picard",
   "scripts": {
     "dev": "run-p watch:server dev:*",
     "watch:server": "npm run build:server -- -w",
@@ -11,7 +12,6 @@
     "build": "run-s build:*",
     "start": "node build/prod/server"
   },
-  "author": "William Picard",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-regular-svg-icons": "^5.15.2",

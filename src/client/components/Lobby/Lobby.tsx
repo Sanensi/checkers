@@ -1,14 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
-import React, { HTMLAttributes, HTMLProps, useState } from "react";
-import { PlayerConfig } from "../../app/game/GameData";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { PlayerConfig } from "../../../app/game/GameData";
+import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
+import { Room, RoomType } from "./Room";
 
-interface Room {
-  roomName: string;
-  player1: string;
-  player2: string;
-  status: "public" | "private" | "in progress";
+interface Lobby {
+  rooms: RoomType[];
+  numberOfPlayersInMatchmaking: number;
 }
 
 interface Props {
@@ -16,7 +15,24 @@ interface Props {
 }
 
 export function Lobby({ player }: Props) {
-  const [rooms, setRooms] = useState<Room[]>([...Array(20).keys()].map(i => {
+  const { path } = useRouteMatch();
+
+  return (
+    <Switch>
+      <Route exact path={path}>
+        <LobbyDisplay player={player} />
+      </Route>
+      <Route path={`${path}/room`}>
+        <Room />
+      </Route>
+    </Switch>
+  )
+}
+
+function LobbyDisplay({ player }: Props) {
+  const { url } = useRouteMatch();
+
+  const [rooms, setRooms] = useState<RoomType[]>([...Array(20).keys()].map(i => {
     const playerName = `Player ${i}`;
     return {
       roomName: `${playerName}'s room`,
@@ -48,7 +64,7 @@ export function Lobby({ player }: Props) {
               </p>
             </div>
             <div className="block is-flex">
-              <button className="button mx-1">Create Room</button>
+              <Link to={`${url}/room`} className="button mx-1">Create Room</Link>
               <button className="button mx-1">Matchmaking</button>
               <span className="is-flex-grow-1"></span>
               <Link to="/" className="button mx-1">Quit</Link>
