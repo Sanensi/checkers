@@ -5,19 +5,22 @@ import { MainMenu } from "./components/Menus";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { Local } from "./components/Local";
 import { Online } from "./components/Online";
+import { useRoot } from "./hooks/useNavigation";
 
 function Root() {
+  const root = useRoot();
+
   return (
     <BrowserRouter>
       <RemoveTrailingSlash />
       <Switch>
-        <Route exact path="/">
+        <Route exact path={root.PATH}>
           <MainMenu />
         </Route>
-        <Route path="/local" >
+        <Route path={root.local.PATH} >
           <Local />
         </Route>
-        <Route path="/online" >
+        <Route path={root.online.PATH} >
           <Online />
         </Route>
       </Switch>

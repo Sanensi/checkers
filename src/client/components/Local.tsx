@@ -1,23 +1,24 @@
-import { Link, Switch, Route, useRouteMatch } from "react-router-dom";
+import { Link, Switch, Route } from "react-router-dom";
 import React, { useState } from "react";
 
 import { defaultGameConfig, GameConfig } from "../../app/game/GameData";
 import { MenuBox, PlayerConfiguration } from "./Menus";
 import { Game } from "./Game";
+import { useRoot } from "../hooks/useNavigation";
 
 export function Local() {
-  const { path } = useRouteMatch();
+  const { local } = useRoot();
   const [gameConfig, setGameConfig] = useState(defaultGameConfig);
 
   return (
     <Switch>
-      <Route exact path={path}>
+      <Route exact path={local.PATH}>
         <LocalOptions
           gameConfig={gameConfig}
           onGameConfigUpdate={setGameConfig}
         />
       </Route>
-      <Route path={`${path}/game`}>
+      <Route path={local.game.PATH}>
         <Game
           gameConfig={gameConfig}
         />
@@ -32,7 +33,7 @@ interface Props {
 }
 
 function LocalOptions({ gameConfig, onGameConfigUpdate }: Props) {
-  const { url } = useRouteMatch();
+  const root = useRoot();
 
   return (
     <MenuBox title="Local Game">
@@ -50,8 +51,8 @@ function LocalOptions({ gameConfig, onGameConfigUpdate }: Props) {
         />
 
         <div className="buttons is-centered">
-          <Link to={`${url}/game`} className="button is-primary">Start</Link>
-          <Link to="/" className="button">Back</Link>
+          <Link to={root.local.game.PATH} className="button is-primary">Start</Link>
+          <Link to={root.PATH} className="button">Back</Link>
         </div>
       </div>
     </MenuBox>

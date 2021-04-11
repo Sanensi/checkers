@@ -1,6 +1,8 @@
 import React from "react";
 import { Switch, useRouteMatch } from "react-router";
 import { Link, Route } from "react-router-dom";
+import { useRoot } from "../../hooks/useNavigation";
+import { join } from "../../utils/Paths";
 import { MenuBox } from "../Menus";
 
 export interface RoomType {
@@ -11,11 +13,11 @@ export interface RoomType {
 }
 
 export function Room() {
-  const { path } = useRouteMatch();
+  const { online: { lobby: { room } } } = useRoot();
 
   return (
     <Switch>
-      <Route exact path={path}>
+      <Route exact path={room.PATH}>
         <CreateRoomOptions />
       </Route>
     </Switch>
@@ -23,7 +25,7 @@ export function Room() {
 }
 
 function CreateRoomOptions() {
-  const { url } = useRouteMatch();
+  const { online: { lobby } } = useRoot();
 
   return (
     <MenuBox title="New Room">
@@ -46,8 +48,8 @@ function CreateRoomOptions() {
         </div>
 
         <div className="buttons is-centered">
-          <Link to={`${url}/some-id`} className="button is-primary">Create</Link>
-          <Link to="/online/lobby" className="button">Back</Link>
+          <Link to={join(lobby.room.PATH, 'some-room')} className="button is-primary">Create</Link>
+          <Link to={lobby.PATH} className="button">Back</Link>
         </div>
       </div>
     </MenuBox>

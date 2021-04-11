@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { PlayerConfig } from "../../app/game/GameData";
+import { useRoot } from "../hooks/useNavigation";
 
 export const MenuBox: React.FC<React.HtmlHTMLAttributes<HTMLDivElement>> = ({className, title, children, ...rest}) => {
   return (
@@ -20,15 +21,17 @@ export const MenuBox: React.FC<React.HtmlHTMLAttributes<HTMLDivElement>> = ({cla
 }
 
 export function MainMenu() {
+  const root = useRoot();
+
   return (
     <MenuBox title="Checkers">
       <div>
         <div className="control block">
-          <Link to="/local" className="button is-fullwidth">Local Game</Link>
+          <Link to={root.local.PATH} className="button is-fullwidth">Local Game</Link>
         </div>
 
         <div className="control block">
-          <Link to="/online" className="button is-fullwidth">Online Game</Link>
+          <Link to={root.online.PATH} className="button is-fullwidth">Online Game</Link>
         </div>
       </div>
     </MenuBox>

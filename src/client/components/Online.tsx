@@ -4,25 +4,26 @@ import { defaultGameConfig, PlayerConfig } from "../../app/game/GameData";
 import { Game } from "./Game";
 import { MenuBox, PlayerConfiguration } from "./Menus";
 import { Lobby } from "./Lobby/Lobby"
+import { useRoot } from "../hooks/useNavigation";
 
 export function Online() {
-  const { path } = useRouteMatch();
+  const { online } = useRoot();
   const [playerConfig, setPlayerConfig] = useState(defaultGameConfig.player1)
 
   return (
     <Switch>
-      <Route exact path={path}>
+      <Route exact path={online.PATH}>
         <OnlineOptions
           playerConfig={playerConfig}
           onPlayerConfigUpdate={setPlayerConfig}
         />
       </Route>
-      <Route path={`${path}/lobby`}>
+      <Route path={online.lobby.PATH}>
         <Lobby
           player={playerConfig}
         />
       </Route>
-      <Route path={`${path}/game`}>
+      <Route path={online.game.PATH}>
         <Game
           gameConfig={{
             ...defaultGameConfig,
@@ -40,7 +41,7 @@ interface Props  {
 }
 
 function OnlineOptions({ playerConfig, onPlayerConfigUpdate }: Props) {
-  const { url } = useRouteMatch();
+  const root = useRoot();
 
   return (
     <MenuBox title="Online Game">
@@ -52,8 +53,8 @@ function OnlineOptions({ playerConfig, onPlayerConfigUpdate }: Props) {
         />
 
         <div className="buttons is-centered">
-          <Link to={`${url}/lobby`} className="button is-primary">Start</Link>
-          <Link to="/" className="button">Back</Link>
+          <Link to={root.online.lobby.PATH} className="button is-primary">Start</Link>
+          <Link to={root.PATH} className="button">Back</Link>
         </div>
       </div>
     </MenuBox>

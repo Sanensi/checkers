@@ -8,13 +8,13 @@ import { GameConfig, Player, PlayerConfig } from "../../app/game/GameData";
 import { createGame } from "../../app/game/GameFactory";
 import { MenuBox } from "./Menus";
 import { useHistory } from "react-router";
+import { useRoot } from "../hooks/useNavigation";
 
 interface Props {
   gameConfig: GameConfig;
 }
 
 export function Game({ gameConfig }: Props) {
-  const history = useHistory();
   const [_, forceUpdate] = useReducer(x => x + 1, 0);
 
   const canvasRef = useRef<HTMLCanvasElement>();
@@ -64,9 +64,7 @@ export function Game({ gameConfig }: Props) {
       />
     </div>
 
-    <GameMenu
-      onQuit={() => history.push("/")}
-    />
+    <GameMenu />
 
     {info && <InformationDisplay
       info={info}
@@ -101,11 +99,11 @@ function PlayerDisplay({ name, color, isCurrentPlayer, numberCaptured }: PlayerD
   )
 }
 
-function GameMenu({ onQuit }: {
-  onQuit: () => void
-}) {
-  const [isActive, setIsActive] = useState(false);
+function GameMenu() {
+  const history = useHistory();
+  const root = useRoot();
 
+  const [isActive, setIsActive] = useState(false);
   const isActiveClass = isActive ? "is-active" : "";
 
   if (isActive) {
@@ -124,7 +122,7 @@ function GameMenu({ onQuit }: {
           <div className="control block">
             <button
               className="button is-fullwidth"
-              onClick={onQuit}
+              onClick={() => history.push(root.PATH)}
             >
               Quit
           </button>

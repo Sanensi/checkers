@@ -22,8 +22,6 @@ const root = pathsOf({
   }
 });
 
-function useNavigation() {
-  return {
-    root
-  }
+export function useRoot() {
+  return root;
 }
