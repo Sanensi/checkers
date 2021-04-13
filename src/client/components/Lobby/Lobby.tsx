@@ -3,11 +3,11 @@ import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
 import { PlayerConfig } from "../../../app/game/GameData";
 import { Link, Route, Switch } from "react-router-dom";
-import { Room, RoomType } from "./Room";
+import { Room, RoomData, RoomType } from "./Room";
 import { useRoot } from "../../hooks/useNavigation";
 
 interface Lobby {
-  rooms: RoomType[];
+  rooms: RoomData[];
   numberOfPlayersInMatchmaking: number;
 }
 
@@ -33,13 +33,13 @@ export function Lobby({ player }: Props) {
 function LobbyDisplay({ player }: Props) {
   const root = useRoot();
 
-  const [rooms, setRooms] = useState<RoomType[]>([...Array(20).keys()].map(i => {
+  const [rooms, setRooms] = useState<RoomData[]>([...Array(20).keys()].map(i => {
     const playerName = `Player ${i}`;
     return {
       roomName: `${playerName}'s room`,
       player1: playerName,
       player2: "",
-      status: "private"
+      type: RoomType.Private
     }
   }));
 
@@ -85,7 +85,7 @@ function LobbyDisplay({ player }: Props) {
                     <td>{room.roomName}</td>
                     <td>{room.player1}</td>
                     <td>{room.player2}</td>
-                    <td>{room.status}</td>
+                    <td>{room.type}</td>
                   </tr>
                 ))}
               </tbody>

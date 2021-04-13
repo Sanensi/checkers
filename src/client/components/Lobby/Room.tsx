@@ -1,15 +1,25 @@
-import React from "react";
-import { Switch, useRouteMatch } from "react-router";
+import React, { useState } from "react";
+import { Switch } from "react-router";
 import { Link, Route } from "react-router-dom";
 import { useRoot } from "../../hooks/useNavigation";
 import { join } from "../../utils/Paths";
 import { MenuBox } from "../Menus";
 
-export interface RoomType {
+export enum RoomType {
+  Public = 'Public',
+  Private = 'Private'
+}
+
+export interface RoomData {
   roomName: string;
-  player1: string;
-  player2: string;
-  status: "public" | "private" | "in progress";
+  player1?: string;
+  player2?: string;
+  type: RoomType;
+}
+
+const defaultRoom: RoomData = {
+  roomName: "Room-1",
+  type: RoomType.Public
 }
 
 export function Room() {
@@ -26,6 +36,7 @@ export function Room() {
 
 function CreateRoomOptions() {
   const { online: { lobby } } = useRoot();
+  const [room, setRoom] = useState<RoomData>(defaultRoom);
 
   return (
     <MenuBox title="New Room">
@@ -35,14 +46,20 @@ function CreateRoomOptions() {
           <input
             className="input"
             type="text"
+            value={room.roomName}
+            onChange={(e) => setRoom({ ...room, roomName: e.target.value })}
           />
         </div>
         <div className="field">
           <label className="label">Visibility</label>
           <div className="select is-fullwidth">
-            <select>
-              <option>Public</option>
-              <option>Private</option>
+            <select
+              value={room.type}
+              onChange={(e) => setRoom({ ...room, type: RoomType[e.target.value] })}
+            >
+              {Object.values(RoomType).map(type => (
+                <option>{type}</option>
+              ))}
             </select>
           </div>
         </div>
