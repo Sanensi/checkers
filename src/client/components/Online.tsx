@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
+import React from "react";
+import { Link, Route, Switch } from "react-router-dom";
 import { defaultGameConfig, PlayerConfig } from "../../app/game/GameData";
 import { Game } from "./Game";
 import { MenuBox, PlayerConfiguration } from "./Menus";
 import { Lobby } from "./Lobby/Lobby"
 import { useRoot } from "../hooks/useNavigation";
+import { useOnline } from "../hooks/useOnline";
 
 export function Online() {
   const { online } = useRoot();
-  const [playerConfig, setPlayerConfig] = useState(defaultGameConfig.player1)
+  const { playerConfig, setPlayerConfig } = useOnline();
 
   return (
     <Switch>
