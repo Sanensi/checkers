@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Route, Switch } from "react-router-dom";
-import { defaultGameConfig, PlayerConfig } from "../../app/game/GameData";
+import { defaultGameConfig } from "../../app/game/GameData";
 import { Game } from "./Game";
 import { MenuBox, PlayerConfiguration } from "./Menus";
 import { Lobby } from "./Lobby/Lobby"
@@ -38,7 +38,7 @@ export function Online() {
 
 function OnlineOptions() {
   const root = useRoot();
-  const { player } = useOnlineContext();
+  const { player, actions: { createPlayer } } = useOnlineContext();
 
   return (
     <MenuBox title="Online Game">
@@ -50,7 +50,7 @@ function OnlineOptions() {
         />
 
         <div className="buttons is-centered">
-          <Link to={root.online.lobby.PATH} className="button is-primary">Start</Link>
+          <Link onClick={createPlayer} to={root.online.lobby.PATH} className="button is-primary">Start</Link>
           <Link to={root.PATH} className="button">Back</Link>
         </div>
       </div>

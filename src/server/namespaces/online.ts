@@ -1,7 +1,17 @@
 import { Namespace } from "socket.io";
 import { PlayerConfig } from "../../app/game/GameData";
 
-export function setupOnline(ns: Namespace) {
+export interface OnlineEvents {
+  'player-init': (num: number, color: string) => void;
+}
+
+export interface OnlineActions {
+  'create-player': (config: PlayerConfig) => void;
+}
+
+type Events = OnlineEvents & OnlineActions;
+
+export function setupOnline(ns: Namespace<Events>) {
   ns.on('connection', (socket) => {
     console.log(`${socket.id} has connected!`);
 
