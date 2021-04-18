@@ -5,52 +5,48 @@ import { Game } from "./Game";
 import { MenuBox, PlayerConfiguration } from "./Menus";
 import { Lobby } from "./Lobby/Lobby"
 import { useRoot } from "../hooks/useNavigation";
-import { useOnline } from "../hooks/useOnline";
+import { OnlineContextConsumer, OnlineContextProvider, useOnlineContext } from "../context/OnlineContext";
 
 export function Online() {
   const { online } = useRoot();
-  const { playerConfig, setPlayerConfig } = useOnline();
 
   return (
-    <Switch>
-      <Route exact path={online.PATH}>
-        <OnlineOptions
-          playerConfig={playerConfig}
-          onPlayerConfigUpdate={setPlayerConfig}
-        />
-      </Route>
-      <Route path={online.lobby.PATH}>
-        <Lobby
-          player={playerConfig}
-        />
-      </Route>
-      <Route path={online.game.PATH}>
-        <Game
-          gameConfig={{
-            ...defaultGameConfig,
-            player1: playerConfig
-          }}
-        />
-      </Route>
-    </Switch>
+    <OnlineContextProvider>
+      <Switch>
+        <Route exact path={online.PATH}>
+          <OnlineOptions />
+        </Route>
+        <Route path={online.lobby.PATH}>
+          <Lobby />
+        </Route>
+        <Route path={online.game.PATH}>
+          <OnlineContextConsumer>
+            {({ player }) => (
+              <Game
+                gameConfig={{
+                  ...defaultGameConfig,
+                  player1: player.config
+                }}
+              />
+            )}
+          </OnlineContextConsumer>
+        </Route>
+      </Switch>
+    </OnlineContextProvider>
   )
 }
 
-interface Props  {
-  playerConfig: PlayerConfig;
-  onPlayerConfigUpdate: React.Dispatch<React.SetStateAction<PlayerConfig>>;
-}
-
-function OnlineOptions({ playerConfig, onPlayerConfigUpdate }: Props) {
+function OnlineOptions() {
   const root = useRoot();
+  const { player } = useOnlineContext();
 
   return (
     <MenuBox title="Online Game">
       <div className="has-text-left">
         <PlayerConfiguration
           label="Display Name and Color"
-          player={playerConfig}
-          onChange={onPlayerConfigUpdate}
+          player={player.config}
+          onChange={player.setConfig}
         />
 
         <div className="buttons is-centered">

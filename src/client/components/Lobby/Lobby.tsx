@@ -1,27 +1,23 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
-import { PlayerConfig } from "../../../app/game/GameData";
 import { Link, Route, Switch } from "react-router-dom";
 import { Room, RoomData, RoomType } from "./Room";
 import { useRoot } from "../../hooks/useNavigation";
+import { useOnlineContext } from "../../context/OnlineContext";
 
 interface Lobby {
   rooms: RoomData[];
   numberOfPlayersInMatchmaking: number;
 }
 
-interface Props {
-  player: PlayerConfig;
-}
-
-export function Lobby({ player }: Props) {
+export function Lobby() {
   const { online: { lobby } } = useRoot();
 
   return (
     <Switch>
       <Route exact path={lobby.PATH}>
-        <LobbyDisplay player={player} />
+        <LobbyDisplay />
       </Route>
       <Route path={lobby.room.PATH}>
         <Room />
@@ -30,8 +26,9 @@ export function Lobby({ player }: Props) {
   )
 }
 
-function LobbyDisplay({ player }: Props) {
+function LobbyDisplay() {
   const root = useRoot();
+  const { player: { config: player } } = useOnlineContext();
 
   const [rooms, setRooms] = useState<RoomData[]>([...Array(20).keys()].map(i => {
     const playerName = `Player ${i}`;
@@ -81,7 +78,7 @@ function LobbyDisplay({ player }: Props) {
               </thead>
               <tbody>
                 {rooms.map(room => (
-                  <tr>
+                  <tr key={room.roomName}>
                     <td>{room.roomName}</td>
                     <td>{room.player1}</td>
                     <td>{room.player2}</td>
