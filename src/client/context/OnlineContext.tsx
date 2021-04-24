@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { PlayerConfig } from "../../app/game/GameData";
+import { Lobby } from "../../app/network/OnlineData";
 import { useOnlineEvents } from "./network/useOnlineEvents";
 
 interface OnlineState {
@@ -16,10 +17,14 @@ const OnlineContext = React.createContext<OnlineState>(undefined);
 
 export const OnlineContextProvider: React.FC = ({ children }) => {
   const [playerConfig, setPlayerConfig] = useState({ name: '', color: '#0000ff' });
+  const [lobby, setLobby] = useState<Lobby>();
 
   const actions = useOnlineEvents({
     'player-init': (num, color) => {
       setPlayerConfig({ name: `Player ${num}`, color })
+    },
+    'lobby-joined': (lobby) => {
+      console.log(lobby);
     }
   });
 

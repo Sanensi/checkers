@@ -1,21 +1,10 @@
 import React, { useState } from "react";
 import { Switch } from "react-router";
 import { Link, Route } from "react-router-dom";
+import { Room as RoomData, RoomType } from "../../../app/network/OnlineData";
 import { useRoot } from "../../hooks/useNavigation";
 import { join } from "../../utils/Paths";
 import { MenuBox } from "../Menus";
-
-export enum RoomType {
-  Public = 'Public',
-  Private = 'Private'
-}
-
-export interface RoomData {
-  roomName: string;
-  player1?: string;
-  player2?: string;
-  type: RoomType;
-}
 
 const defaultRoom: RoomData = {
   roomName: "Room-1",

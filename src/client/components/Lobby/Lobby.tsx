@@ -2,14 +2,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
 import { Link, Route, Switch } from "react-router-dom";
-import { Room, RoomData, RoomType } from "./Room";
+import { Room } from "./Room";
 import { useRoot } from "../../hooks/useNavigation";
 import { useOnlineContext } from "../../context/OnlineContext";
-
-interface Lobby {
-  rooms: RoomData[];
-  numberOfPlayersInMatchmaking: number;
-}
+import { Room as RoomData, RoomType } from "../../../app/network/OnlineData";
 
 export function Lobby() {
   const { online: { lobby } } = useRoot();
@@ -73,7 +69,7 @@ function LobbyDisplay() {
                   <th>Room name</th>
                   <th>Player 1</th>
                   <th>Player 2</th>
-                  <th>Status</th>
+                  <th>Type</th>
                 </tr>
               </thead>
               <tbody>
