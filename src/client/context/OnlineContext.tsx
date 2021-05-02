@@ -1,44 +1,47 @@
 import React, { useContext, useState } from "react";
-import { PlayerConfig } from "../../app/game/GameData";
+import { PlayerConfig, randomPlayerConfig } from "../../app/game/GameData";
 import { Lobby } from "../../app/network/OnlineData";
 import { useOnlineEvents } from "./network/useOnlineEvents";
 
 interface OnlineState {
+  actions: { };
+
   player: {
     config: PlayerConfig;
     setConfig: (config: PlayerConfig) => void;
-  }
-  actions: {
-    createPlayer: () => void;
   };
+
+  lobby: Lobby;
 }
+
+const defaultLobby: Lobby = {
+  numberOfPlayersInMatchmaking: 0,
+  rooms: []
+};
 
 const OnlineContext = React.createContext<OnlineState>(undefined);
 
 export const OnlineContextProvider: React.FC = ({ children }) => {
-  const [playerConfig, setPlayerConfig] = useState({ name: '', color: '#0000ff' });
-  const [lobby, setLobby] = useState<Lobby>();
+  const [playerConfig, setPlayerConfig] = useState(randomPlayerConfig());
+  const [lobby, setLobby] = useState<Lobby>(defaultLobby);
 
   const actions = useOnlineEvents({
-    'player-init': (num, color) => {
-      setPlayerConfig({ name: `Player ${num}`, color })
-    },
-    'lobby-joined': (lobby) => {
+    'lobby-updated': (lobby) => {
       console.log(lobby);
+      setLobby(lobby);
     }
   });
 
   return (
     <OnlineContext.Provider value={{
+      actions: { },
+
       player: {
         config: playerConfig,
         setConfig: setPlayerConfig
       },
-      actions: {
-        createPlayer: () => {
-          actions.createPlayer(playerConfig);
-        }
-      }
+
+      lobby,
     }}>
       {children}
     </OnlineContext.Provider>

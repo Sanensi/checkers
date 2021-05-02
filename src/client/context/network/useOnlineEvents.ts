@@ -8,20 +8,13 @@ const ORIGIN = `${location.protocol}//${location.hostname}:3000`;
 const ENDPOINT = `${ORIGIN}/online/lobby`;
 
 export function useOnlineEvents(events: OnlineEvents): Camelize<OnlineActions> {
-  const [actions, setActions] = useState<Camelize<OnlineActions>>({
-    createPlayer: () => {}
-  });
+  const [actions, setActions] = useState<Camelize<OnlineActions>>({});
 
   useEffect(() => {
     const socket: Socket<OnlineEvents, OnlineActions> = io(ENDPOINT);
 
-    socket.on('player-init', events['player-init']);
-    socket.on('lobby-joined', events['lobby-joined']);
+    socket.on('lobby-updated', events["lobby-updated"]);
 
-    setActions({
-      createPlayer: (config) => socket.emit('create-player', config)
-    });
-    
     return () => {
       socket.disconnect();
     }

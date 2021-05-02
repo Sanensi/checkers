@@ -1,11 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
-import React, { useState } from "react";
+import React from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import { Room } from "./Room";
 import { useRoot } from "../../hooks/useNavigation";
 import { useOnlineContext } from "../../context/OnlineContext";
-import { Room as RoomData, RoomType } from "../../../app/network/OnlineData";
 
 export function Lobby() {
   const { online: { lobby } } = useRoot();
@@ -24,17 +23,7 @@ export function Lobby() {
 
 function LobbyDisplay() {
   const root = useRoot();
-  const { player: { config: player } } = useOnlineContext();
-
-  const [rooms, setRooms] = useState<RoomData[]>([...Array(20).keys()].map(i => {
-    const playerName = `Player ${i}`;
-    return {
-      roomName: `${playerName}'s room`,
-      player1: playerName,
-      player2: "",
-      type: RoomType.Private
-    }
-  }));
+  const { player: { config: player }, lobby } = useOnlineContext();
 
   return (
     <div className="hero is-fullheight">
@@ -44,7 +33,7 @@ function LobbyDisplay() {
             <h1 className="title block has-text-centered">Online Lobby</h1>
             <div className="block is-size-5 is-flex">
               <p>
-                Players in matchmaking: 0
+                Players in matchmaking: {lobby.numberOfPlayersInMatchmaking}
               </p>
               <span className="is-flex-grow-1"></span>
               <p>
@@ -73,7 +62,7 @@ function LobbyDisplay() {
                 </tr>
               </thead>
               <tbody>
-                {rooms.map(room => (
+                {lobby.rooms.map(room => (
                   <tr key={room.roomName}>
                     <td>{room.roomName}</td>
                     <td>{room.player1}</td>

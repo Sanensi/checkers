@@ -30,3 +30,10 @@ export const defaultGameConfig: GameConfig = {
   player2: { name: "Player 2", color: "#ff0000" },
   startingPlayer: StartingPlayer.P1
 }
+
+export function randomPlayerConfig(maxPlayerNumber = 1000): PlayerConfig {
+  return {
+    color: '#' + Math.floor(Math.random() * 0x1000000).toString(16).padStart(6, '0'),
+    name: 'Player ' + Math.ceil(Math.random() * maxPlayerNumber)
+  };
+}
