@@ -1,9 +1,10 @@
 import { PlayerConfig } from "../../app/game/GameData";
 import { RoomType, Lobby as LobbyData, Room } from "../../app/network/LobbyData";
 
-export class PlayerId {
-  private __nominal: void;
-  constructor(public value: string) {}
+const PlayerIdSymbol = Symbol();
+export type PlayerId = Nominal<string, typeof PlayerIdSymbol>;
+export function playerIdFromString(value: string): PlayerId {
+  return value as PlayerId;
 }
 
 export interface Player extends PlayerConfig {
@@ -12,16 +13,17 @@ export interface Player extends PlayerConfig {
 
 export class Lobby implements LobbyData {
   players = new Map<PlayerId, Player>();
-  rooms: Room[] = [...Array(20).keys()].map(i => {
-    const playerName = `Player ${i}`;
-    return {
-      roomId: i.toString(),
-      roomName: `${playerName}'s room`,
-      player1: playerName,
-      player2: "",
-      type: RoomType.Private
-    }
-  });
+  rooms = [];
+  // rooms: Room[] = [...Array(20).keys()].map(i => {
+  //   const playerName = `Player ${i}`;
+  //   return {
+  //     roomId: i.toString(),
+  //     roomName: `${playerName}'s room`,
+  //     player1: playerName,
+  //     player2: "",
+  //     type: RoomType.Private
+  //   }
+  // });
 
   public get numberOfPlayersOnline() {
     return this.players.size;

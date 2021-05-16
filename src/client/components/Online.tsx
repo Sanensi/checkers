@@ -38,7 +38,7 @@ export function Online() {
 
 function OnlineOptions() {
   const root = useRoot();
-  const { player, actions: { } } = useLobbyContext();
+  const { player, actions: { joinLobby } } = useLobbyContext();
 
   return (
     <MenuBox title="Online Game">
@@ -50,7 +50,7 @@ function OnlineOptions() {
         />
 
         <div className="buttons is-centered">
-          <Link onClick={() => console.log('player-joined')} to={root.online.lobby.PATH} className="button is-primary">Start</Link>
+          <Link onClick={() => joinLobby(player.config)} to={root.online.lobby.PATH} className="button is-primary">Start</Link>
           <Link to={root.PATH} className="button">Back</Link>
         </div>
       </div>

@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
 import { PlayerConfig, randomPlayerConfig } from "../../app/game/GameData";
 import { Lobby } from "../../app/network/LobbyData";
+import { LobbyActions } from "../../app/network/LobbyEvents";
+import { Camelize } from "../../app/utils/Camelize";
 import { useLobbyEvents } from "./network/useLobbyEvents";
 
 interface LobbyState {
-  actions: { };
+  actions: Camelize<LobbyActions>;
 
   player: {
     config: PlayerConfig;
@@ -34,7 +36,9 @@ export const LobbyContextProvider: React.FC = ({ children }) => {
 
   return (
     <LobbyContext.Provider value={{
-      actions: { },
+      actions: {
+        ...actions
+      },
 
       player: {
         config: playerConfig,

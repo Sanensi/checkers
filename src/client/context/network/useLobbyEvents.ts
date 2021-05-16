@@ -16,8 +16,8 @@ export function useLobbyEvents(events: LobbyEvents): Camelize<LobbyActions> {
     socket.on('lobby-updated', events["lobby-updated"]);
 
     setActions({
-      createRoom: (room) => { socket.emit('create-room', room); }
-    })
+      joinLobby: (player) => { socket.emit('join-lobby', player); }
+    });
 
     return () => {
       socket.disconnect();

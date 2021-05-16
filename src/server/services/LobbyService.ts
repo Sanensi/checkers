@@ -15,19 +15,25 @@ export class LobbyService {
   ) {}
 
   getLobbyData(): LobbyData {
+    console.log(this.lobby);
     return pick(this.lobby, 'numberOfPlayersOnline', 'rooms');
   }
 
-  playerJoin(player: PlayerConfig, playerId: PlayerId) {
+  playerJoined(player: PlayerConfig, playerId: PlayerId) {
     this.lobby.players.set(playerId, {
       ...player,
       playerId
     });
-    this.lobbyEvents.lobbyUpdated(this.lobby);
+    this.lobbyEvents.lobbyUpdated(this.getLobbyData());
+  }
+
+  playerLeft(playerId: PlayerId) {
+    this.lobby.players.delete(playerId);
+    this.lobbyEvents.lobbyUpdated(this.getLobbyData());
   }
 
   createRoom(roomConfig: RoomConfig) {
     this.lobby.rooms.push(roomConfig);
-    this.lobbyEvents.lobbyUpdated(this.lobby);
+    this.lobbyEvents.lobbyUpdated(this.getLobbyData());
   }
 }
