@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Switch } from "react-router";
 import { Link, Route } from "react-router-dom";
-import { Room as RoomData, RoomType } from "../../../app/network/OnlineData";
+import { RoomConfig, RoomType } from "../../../app/network/LobbyData";
 import { useRoot } from "../../hooks/useNavigation";
 import { join } from "../../utils/Paths";
 import { MenuBox } from "../Menus";
 
-const defaultRoom: RoomData = {
-  roomName: "Room-1",
-  type: RoomType.Public
+function createRandomRoom(): RoomConfig {
+  return {
+    roomName: "Room-" + Math.floor(Math.random() * 9999).toString().padStart(4, '0'),
+    type: RoomType.Public
+  }
 }
 
 export function Room() {
@@ -25,7 +27,7 @@ export function Room() {
 
 function CreateRoomOptions() {
   const { online: { lobby } } = useRoot();
-  const [room, setRoom] = useState<RoomData>(defaultRoom);
+  const [room, setRoom] = useState<RoomConfig>(createRandomRoom);
 
   return (
     <MenuBox title="New Room">
@@ -47,7 +49,7 @@ function CreateRoomOptions() {
               onChange={(e) => setRoom({ ...room, type: RoomType[e.target.value] })}
             >
               {Object.values(RoomType).map(type => (
-                <option>{type}</option>
+                <option key={type}>{type}</option>
               ))}
             </select>
           </div>

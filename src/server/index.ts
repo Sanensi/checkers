@@ -2,7 +2,9 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import path from "path";
-import { setupOnline } from "./namespaces/online";
+import { setupOnlineActions, setupOnlineEvents } from "./namespaces/LobbyNamespace";
+import { LobbyService } from "./services/LobbyService";
+import { Root } from "./api/Root";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -13,14 +15,18 @@ const io = new Server(server, {
   }
 });
 
+const onlineNamespace = io.of('online/lobby');
+const lobbyEvents = setupOnlineEvents(onlineNamespace);
+const lobbyService = new LobbyService(lobbyEvents);
+setupOnlineActions(onlineNamespace, lobbyService);
+
 const clientPath = path.join(__dirname, '..', 'client');
 
 app.use(express.static(clientPath));
-app.get('/*', function (req, res) {
+app.use('/api', Root(lobbyService));
+app.get('/*', (req, res) => {
   res.sendFile(path.join(clientPath, 'index.html'));
 });
-
-setupOnline(io.of('online/lobby'));
 
 server.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

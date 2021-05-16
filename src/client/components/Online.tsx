@@ -5,13 +5,13 @@ import { Game } from "./Game";
 import { MenuBox, PlayerConfiguration } from "./Menus";
 import { Lobby } from "./Lobby/Lobby"
 import { useRoot } from "../hooks/useNavigation";
-import { OnlineContextConsumer, OnlineContextProvider, useOnlineContext } from "../context/OnlineContext";
+import { LobbyContextConsumer, LobbyContextProvider, useLobbyContext } from "../context/LobbyContext";
 
 export function Online() {
   const { online } = useRoot();
 
   return (
-    <OnlineContextProvider>
+    <LobbyContextProvider>
       <Switch>
         <Route exact path={online.PATH}>
           <OnlineOptions />
@@ -20,7 +20,7 @@ export function Online() {
           <Lobby />
         </Route>
         <Route path={online.game.PATH}>
-          <OnlineContextConsumer>
+          <LobbyContextConsumer>
             {({ player }) => (
               <Game
                 gameConfig={{
@@ -29,16 +29,16 @@ export function Online() {
                 }}
               />
             )}
-          </OnlineContextConsumer>
+          </LobbyContextConsumer>
         </Route>
       </Switch>
-    </OnlineContextProvider>
+    </LobbyContextProvider>
   )
 }
 
 function OnlineOptions() {
   const root = useRoot();
-  const { player, actions: { } } = useOnlineContext();
+  const { player, actions: { } } = useLobbyContext();
 
   return (
     <MenuBox title="Online Game">

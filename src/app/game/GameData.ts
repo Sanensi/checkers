@@ -15,7 +15,7 @@ export type Player = {
   tokens: Token[];
 }
 
-export type PlayerConfig = Omit<Player, "direction" | "tokens">;
+export type PlayerConfig = Pick<Player, 'color' | 'name'>;
 
 export enum StartingPlayer { P1, P2, Random }
 
@@ -31,7 +31,7 @@ export const defaultGameConfig: GameConfig = {
   startingPlayer: StartingPlayer.P1
 }
 
-export function randomPlayerConfig(maxPlayerNumber = 1000): PlayerConfig {
+export function randomPlayerConfig(maxPlayerNumber = 9999): PlayerConfig {
   return {
     color: '#' + Math.floor(Math.random() * 0x1000000).toString(16).padStart(6, '0'),
     name: 'Player ' + Math.ceil(Math.random() * maxPlayerNumber)

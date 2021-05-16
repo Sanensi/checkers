@@ -11,7 +11,9 @@ export interface Room {
   type: RoomType;
 }
 
+export type RoomConfig = Pick<Room, 'roomName' | 'type'>;
+
 export interface Lobby {
   rooms: Room[];
-  numberOfPlayersInMatchmaking: number;
+  numberOfPlayersOnline: number;
 }

@@ -4,7 +4,7 @@ import React from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import { Room } from "./Room";
 import { useRoot } from "../../hooks/useNavigation";
-import { useOnlineContext } from "../../context/OnlineContext";
+import { useLobbyContext } from "../../context/LobbyContext";
 
 export function Lobby() {
   const { online: { lobby } } = useRoot();
@@ -23,7 +23,7 @@ export function Lobby() {
 
 function LobbyDisplay() {
   const root = useRoot();
-  const { player: { config: player }, lobby } = useOnlineContext();
+  const { player: { config: player }, lobby } = useLobbyContext();
 
   return (
     <div className="hero is-fullheight">
@@ -33,7 +33,7 @@ function LobbyDisplay() {
             <h1 className="title block has-text-centered">Online Lobby</h1>
             <div className="block is-size-5 is-flex">
               <p>
-                Players in matchmaking: {lobby.numberOfPlayersInMatchmaking}
+                Players online: {lobby.numberOfPlayersOnline}
               </p>
               <span className="is-flex-grow-1"></span>
               <p>

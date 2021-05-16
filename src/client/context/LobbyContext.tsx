@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import { PlayerConfig, randomPlayerConfig } from "../../app/game/GameData";
-import { Lobby } from "../../app/network/OnlineData";
-import { useOnlineEvents } from "./network/useOnlineEvents";
+import { Lobby } from "../../app/network/LobbyData";
+import { useLobbyEvents } from "./network/useLobbyEvents";
 
-interface OnlineState {
+interface LobbyState {
   actions: { };
 
   player: {
@@ -15,17 +15,17 @@ interface OnlineState {
 }
 
 const defaultLobby: Lobby = {
-  numberOfPlayersInMatchmaking: 0,
+  numberOfPlayersOnline: 0,
   rooms: []
 };
 
-const OnlineContext = React.createContext<OnlineState>(undefined);
+const LobbyContext = React.createContext<LobbyState>(undefined);
 
-export const OnlineContextProvider: React.FC = ({ children }) => {
-  const [playerConfig, setPlayerConfig] = useState(randomPlayerConfig());
+export const LobbyContextProvider: React.FC = ({ children }) => {
+  const [playerConfig, setPlayerConfig] = useState(randomPlayerConfig);
   const [lobby, setLobby] = useState<Lobby>(defaultLobby);
 
-  const actions = useOnlineEvents({
+  const actions = useLobbyEvents({
     'lobby-updated': (lobby) => {
       console.log(lobby);
       setLobby(lobby);
@@ -33,7 +33,7 @@ export const OnlineContextProvider: React.FC = ({ children }) => {
   });
 
   return (
-    <OnlineContext.Provider value={{
+    <LobbyContext.Provider value={{
       actions: { },
 
       player: {
@@ -44,13 +44,13 @@ export const OnlineContextProvider: React.FC = ({ children }) => {
       lobby,
     }}>
       {children}
-    </OnlineContext.Provider>
+    </LobbyContext.Provider>
   );
 }
 
 
-export function useOnlineContext() {
-  const context = useContext(OnlineContext);
+export function useLobbyContext() {
+  const context = useContext(LobbyContext);
 
   if (context === undefined) {
     throw new Error('OnlineContext must be used under an OnlineContextProvider');
@@ -59,4 +59,4 @@ export function useOnlineContext() {
   return context;
 }
 
-export const OnlineContextConsumer = OnlineContext.Consumer;
+export const LobbyContextConsumer = LobbyContext.Consumer;
