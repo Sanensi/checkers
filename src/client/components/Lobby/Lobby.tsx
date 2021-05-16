@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Redirect, Route, Switch } from "react-router-dom";
 import { Room } from "./Room";
 import { useRoot } from "../../hooks/useNavigation";
 import { useLobbyContext } from "../../context/LobbyContext";
@@ -17,6 +17,7 @@ export function Lobby() {
       <Route path={lobby.room.PATH}>
         <Room />
       </Route>
+      <Redirect to={lobby.PATH} />
     </Switch>
   )
 }

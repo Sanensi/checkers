@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Switch } from "react-router";
+import { Redirect, Switch } from "react-router";
 import { Link, Route } from "react-router-dom";
 import { RoomConfig, RoomType } from "../../../app/network/LobbyData";
 import { useRoot } from "../../hooks/useNavigation";
@@ -21,6 +21,7 @@ export function Room() {
       <Route exact path={room.PATH}>
         <CreateRoomOptions />
       </Route>
+      <Redirect to={room.PATH} />
     </Switch>
   )
 }

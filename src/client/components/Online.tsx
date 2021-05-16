@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Redirect, Route, Switch } from "react-router-dom";
 import { defaultGameConfig } from "../../app/game/GameData";
 import { Game } from "./Game";
 import { MenuBox, PlayerConfiguration } from "./Menus";
@@ -18,8 +18,8 @@ export function Online() {
         </Route>
         <Route path={online.lobby.PATH}>
           <Lobby />
-        </Route>
-        <Route path={online.game.PATH}>
+        </Route>,
+        <Route exact path={online.game.PATH}>
           <LobbyContextConsumer>
             {({ player }) => (
               <Game
@@ -31,6 +31,7 @@ export function Online() {
             )}
           </LobbyContextConsumer>
         </Route>
+        <Redirect to={online.PATH} />
       </Switch>
     </LobbyContextProvider>
   )

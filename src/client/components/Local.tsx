@@ -1,4 +1,4 @@
-import { Link, Switch, Route } from "react-router-dom";
+import { Link, Switch, Route, Redirect } from "react-router-dom";
 import React, { useState } from "react";
 
 import { defaultGameConfig, GameConfig } from "../../app/game/GameData";
@@ -18,11 +18,12 @@ export function Local() {
           onGameConfigUpdate={setGameConfig}
         />
       </Route>
-      <Route path={local.game.PATH}>
+      <Route exact path={local.game.PATH}>
         <Game
           gameConfig={gameConfig}
         />
       </Route>
+      <Redirect to={local.PATH} />
     </Switch>
   )
 }

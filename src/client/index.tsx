@@ -23,6 +23,7 @@ function Root() {
         <Route path={root.online.PATH} >
           <Online />
         </Route>
+        <Redirect to="/" />
       </Switch>
     </BrowserRouter>
   )
